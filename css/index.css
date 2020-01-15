@@ -1,0 +1,120 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+body {
+    position: relative;
+    overflow: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+
+.content_body {
+    width: 100%;
+    height: 100%;
+    background: url("../image/bg.jpg") no-repeat center center;
+    background-size: 100% 100%;
+    position: relative;
+    /*overflow: hidden;*/
+    /*!*overflow: auto;*/
+    /*-webkit-overflow-scrolling: touch;*!*/
+}
+.logo{
+    width: 30%;
+    height: auto;
+    float: left;
+    margin-left: 10vw;
+    margin-top: 5vw;
+}
+.title{
+    width: 85%;
+    height: auto;
+    margin-left: 8%;
+    margin-top: 3vh;
+}
+.voteContent{
+    width: 80%;
+    height: 48vh;
+    background: url("../image/kuang.png") no-repeat;
+    background-size: 100% 100%;
+    margin-left: 10%;
+    margin-top: 3vh;
+    position: relative;
+}
+.voteOut{
+    width: 93%;
+    height: 41vh;
+    overflow: auto;
+    /*background-color: pink;*/
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}
+.voteLi{
+    width: 100%;
+    padding-bottom: 3vh;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    /*background-color: gold;*/
+}
+.round{
+    width: 8%;
+    height: auto;
+    margin-left: 3vw;
+}
+.gameName{
+    width: 45%;
+    /*background-color: green;*/
+    font-size: 0.8rem;
+    color: #00feff;
+    margin-left: 5%;
+    text-align: center;
+    font-weight: bold;
+}
+.voteBtn{
+    width: 27%;
+    height: 1.5rem;
+    border-radius: 1rem;
+    border: 1px solid #00ffff;
+    background-color: #4b75c7;
+    line-height: 1.6rem;
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-align: center;
+    margin-left: 5%;
+    font-weight: bold;
+    color: white;
+}
+
+.show{
+    border: 1px solid #fffef8;
+    background: white;
+    color:#4b75c7;
+}
+
+
+.submit{
+    background: url("../image/submitBtn.png") no-repeat;
+    background-size: 100% 100%;
+    width: 35%;
+    height: 17vw;
+    margin-left: 32.5%;
+    margin-top: 3vh;
+}
+.vote_num{
+    width: 20%;
+    /*height: 1.5rem;*/
+    /*background-color: #00FF00;*/
+    /*line-height: 1.55rem;*/
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-align: right;
+    margin-left: 12%;
+    font-weight: bold;
+    color: white;
+    overflow: auto;
+}

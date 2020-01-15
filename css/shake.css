@@ -1,0 +1,49 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+body {
+    position: relative;
+    /*overflow: auto;
+    -webkit-overflow-scrolling: touch;*/
+}
+
+
+.content_body {
+    width: 100%;
+    height: 100%;
+    background: url("../image/bg.jpg") no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    overflow: hidden;
+    /*overflow: auto;
+    -webkit-overflow-scrolling: touch;*/
+}
+.logo{
+    width: 30%;
+    height: auto;
+    float: left;
+    margin-left: 5vw;
+    margin-top: 5vw;
+}
+.title{
+    width: 85%;
+    height: auto;
+    margin-left: 8%;
+    margin-top: 3vh;
+}
+.shadw{
+    width: 70%;
+    height: auto;
+    margin-left: 15%;
+    margin-top: 5vh;
+}
+.msg{
+    width: 100%;
+    line-height: 2rem;
+    text-align: center;
+    font-size: 1rem;
+    color: #00fefd;
+    letter-spacing: 2px;
+    margin-top: 2vh;
+}

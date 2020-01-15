@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LM年会手机摇一摇</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/shake.css">
+    <style>
+        .restart-animation {
+            animation: wobble-restart 1s;
+        }
+        @keyframes wobble-restart{0%{-webkit-transform:none;transform:none}15%{-webkit-transform:translate3d(-25%,0,0) rotate3d(0,0,1,-5deg);transform:translate3d(-25%,0,0) rotate3d(0,0,1,-5deg)}30%{-webkit-transform:translate3d(20%,0,0) rotate3d(0,0,1,3deg);transform:translate3d(20%,0,0) rotate3d(0,0,1,3deg)}45%{-webkit-transform:translate3d(-15%,0,0) rotate3d(0,0,1,-3deg);transform:translate3d(-15%,0,0) rotate3d(0,0,1,-3deg)}60%{-webkit-transform:translate3d(10%,0,0) rotate3d(0,0,1,2deg);transform:translate3d(10%,0,0) rotate3d(0,0,1,2deg)}75%{-webkit-transform:translate3d(-5%,0,0) rotate3d(0,0,1,-1deg);transform:translate3d(-5%,0,0) rotate3d(0,0,1,-1deg)}100%{-webkit-transform:none;transform:none}}
+    </style>
+</head>
+<body>
+<!-- 摇一摇的音乐 -->
+<!--<audio id="shakemusic" src="music/red-01.mp3" style="display: none;"></audio>-->
+<!--<audio id="openmusic" src="music/red-02.mp3" style="display: none;"></audio>-->
+
+
+<div class="content_body red_bg">
+    <img src="image/logo.png" class="logo">
+    <img src="image/title.png" class="title">
+
+    <img src="image/shadw.png" class="shadw animated">
+    <p class="msg animated fadeInUp">您已经摇了<b></b>次!</p>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<script src="js/rem.js"></script>
+<script src="js/base_url.js"></script>
+<script src="node_modules/lbd-wx-sdk/dist/index.js"></script>
+<script>
+    function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
+<script>
+    var loadIndex,
+        layer,
+        timeAjax = 0;
+    var is_start = 2;
+</script>
+<script src="js/request.js"></script>
+
+<script>
+    // 添加音乐  有关于音乐播放的
+    // var audio = document.getElementById("shakemusic");
+    // var openAudio = document.getElementById("openmusic");
+    var shakeNum=0;
+    var data = {};
+    myPost('/checkShakeType', data, function (res) {
+        if (res.code === 200) {
+            var dataList = res.data || {};
+            shakeNum = dataList.shake_total;
+            $('.msg b').text(shakeNum);
+        }
+    });
+
+    // var shakeNum = ~~window.localStorage.getItem('shakeNum');
+    layui.use('layer', function () {
+        layer = layui.layer;
+        $(function () {
+            /**一进入页面直接获取活动是否开始 checkShakeType（ajax）**/
+            layer.ready(function () {
+                loadIndex = layer.load();
+            });
+            $('.msg b').text(shakeNum);
+
+            var data = {"shake_total": shakeNum};
+            myPost('/shake', data);
+
+            var shakeTypeAjaxDSQ = setInterval(function () {
+                var data = {};
+                myPost('/checkShakeType', data, function (res) {
+                    if (res.code === 200) {
+                        var dataList = res.data || {};
+                        is_start = dataList.is_start;
+                    }
+                });
+            }, 1700);
+
+            if (window.DeviceMotionEvent) {
+                var speed = 42;
+                var x = t = z = lastX = lastY = lastZ = 0;
+                window.addEventListener('devicemotion', function () {
+                    var acceleration = event.accelerationIncludingGravity;
+                    var x = acceleration.x;
+                    var y = acceleration.y;
+
+                    const isValidShake = Math.abs(x - lastX) > speed || Math.abs(y - lastY) > speed;
+                    if (isValidShake) {
+                        if ($('.shadw').hasClass('wobble')) {
+                            $('.shadw').removeClass('wobble');
+                            $('.shadw').addClass('restart-animation')
+                        } else {
+                            $('.shadw').removeClass('restart-animation');
+                            $('.shadw').addClass('wobble')
+                        }
+
+                        if (is_start === 1) {  //1是活动开始(
+                            /**触发shake(ajax)**/
+                            if (!timeAjax) {
+                                timeAjax = setInterval(function () {
+                                    var data = {"shake_total": shakeNum};
+                                    myPost('/shake', data);
+                                }, 2000)
+                            }
+                            $('.msg b').text(++shakeNum);
+                            // window.localStorage.setItem('shakeNum', shakeNum);
+                        } else {  //2是活动没开始
+                            layer.msg('活动关闭中！');
+                            var data = {};
+                            myPost('/checkShakeType', data, function (res) {
+                                if (res.code === 200) {
+                                    var dataList = res.data || {};
+                                    shakeNum = dataList.shake_total;
+                                    $('.msg b').text(shakeNum);
+                                }
+                            });
+                            return;
+                        }
+                    }
+                    lastX = x;
+                    lastY = y;
+                }, false);
+            }
+
+        })
+    })
+</script>
+</html>

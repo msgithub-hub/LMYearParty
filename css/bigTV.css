@@ -1,0 +1,62 @@
+body {
+    position: relative;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.content_body {
+    width: 100%;
+    height: 100%;
+    background: url(../image/bigTvBG.jpg) no-repeat center center;
+    background-size: 100% 100%;
+    /*background: palevioletred;*/
+    position: relative;
+    overflow: hidden;
+    /*overflow: auto;*/
+    /*-webkit-overflow-scrolling: touch*/
+}
+
+.bigTVlogo {
+    width: 15%;
+    height: auto;
+    margin-top: 2vh;
+    margin-left: 2%;
+    cursor: pointer;
+}
+.indexMaImg{
+    width:15%;
+    height: auto;
+    margin-top: 10px;
+    margin-left: 2%;
+
+}
+.start{
+    width: 5vw;
+    height:3vw;
+    background-color: yellow;
+    color: white;
+    font-size: 24px;
+    margin-left: 47.5%;
+    margin-top: -60px;
+    text-align: center;
+    line-height: 3vw;
+    letter-spacing: 2px;
+    border-radius: 0.5vw;
+
+}
+
+#main{
+    width: 75vw;
+    height: 75vh;
+    /*background: gold;*/
+    position: absolute;
+    left:20vw;
+    right:0;
+    top:20vh;
+    bottom: 0;
+    margin: auto;
+
+}

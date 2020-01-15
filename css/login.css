@@ -1,0 +1,93 @@
+html, body {
+    height: 100%;
+    width: 100%;
+}
+body {
+    position: relative;
+    /*overflow: auto;
+    -webkit-overflow-scrolling: touch;*/
+}
+
+
+.content_body {
+    width: 100%;
+    height: 100%;
+    background: url("../image/bg.jpg") no-repeat;
+    background-size: 100% 100%;
+    position: relative;
+    overflow: hidden;
+    /*overflow: auto;
+    -webkit-overflow-scrolling: touch;*/
+}
+.logo{
+    width: 30%;
+    height: auto;
+    float: left;
+    margin-left: 5vw;
+    margin-top: 5vw;
+}
+.men_form{
+    width: 80%;
+    /*background: yellowgreen;*/
+    /*float: left;*/
+    margin-top: 28vh;
+    margin-left: 10%;
+    padding-top: 4vh;
+    padding-bottom:4vh;
+}
+.men_form-son{
+    /*padding-bottom: 1vh;*/
+    /*background: red;*/
+    margin-top: 5vh;
+    width: 100%;
+    height: 14vw;
+}
+.men_form1{
+    background: url("../image/nameKuang.png") no-repeat;
+    background-size: 100% 100%;
+}
+.men_form2{
+    background: url("../image/keyKuang.png") no-repeat;
+    background-size: 100% 100%;
+}
+.men{
+    width: 70%;
+    height: 14vw;
+    margin-left: 15%;
+    /*background-color: pink;*/
+    padding-left: 4px;
+    outline: none;
+    border: none;
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: white;
+    background-color:transparent ;
+
+}
+.submit{
+    background: url("../image/loginBtn.png") no-repeat;
+    background-size: 100% 100%;
+    width: 50%;
+    height: 17vw;
+    margin-left: 25%;
+    margin-top: 12vw;
+}
+.mask{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 1);
+}
+.successMask{
+    width: 65%;
+    height: 65vw;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
+}

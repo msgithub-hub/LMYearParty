@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>LM年会节目单</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <style>
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        body {
+            position: relative;
+            /*overflow: auto;
+            -webkit-overflow-scrolling: touch;*/
+        }
+
+        .content_body {
+            width: 100%;
+            height: 100%;
+            background: url("image/bg.jpg") no-repeat;
+            background-size: 100% 100%;
+            position: relative;
+            /*overflow: hidden;*/
+            overflow: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .logo{
+            width: 30%;
+            height: auto;
+            float: left;
+            margin-left: 5vw;
+            margin-top: 5vw;
+        }
+        .title{
+            width: 85%;
+            height: auto;
+            margin-left: 8%;
+            margin-top: 3vh;
+        }
+        .programMask{
+            width: 100%;
+            height: auto;
+            margin-left: 0%;
+            margin-top:0vh;
+            /*position: absolute;*/
+            /*left: 0;*/
+            /*right: 0;*/
+            /*top: 0;*/
+            /*bottom: 0;*/
+            /*margin: auto;*/
+        }
+    </style>
+</head>
+<body>
+<div class="content_body">
+    <!--<img src="image/logo.png" class="logo">-->
+    <!--<img src="image/title.png" class="title">-->
+    <img src="image/programImg.jpg" class="programMask">
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<script src="js/rem.js"></script>
+<script src="js/base_url.js"></script>
+<script src="node_modules/lbd-wx-sdk/dist/index.js"></script>
+<script>
+    function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
+<script>
+    var loadIndex,
+        layer;
+</script>
+<script src="js/request.js"></script>
+<script>
+    $(function () {
+
+    })
+</script>
+
+</html>

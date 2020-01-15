@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>LM年会</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
+</head>
+<body>
+<div class="content_body">
+    <img src="image/logo.png" class="logo">
+    <img src="image/title.png" class="title">
+    <div class="voteContent">
+        <ul class="voteOut">
+
+        </ul>
+    </div>
+    <p class="submit none"></p>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<script src="js/rem.js"></script>
+
+<script src="js/base_url.js"></script>
+<script src="node_modules/lbd-wx-sdk/dist/index.js"></script>
+<script>
+    function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+</script>
+<script>
+    var loadIndex,
+        layer;
+</script>
+<script src="js/request.js"></script>
+<script>
+    var checkArr = [];
+    layui.use('layer', function () {
+        layer = layui.layer;
+        $(function () {
+            layer.ready(function () {
+                loadIndex = layer.load();
+            });
+
+
+            /**获取节目列表Ajax**/
+            var data = {};
+            myPost('/artList', data, function (res) {
+                if (res.code === 200) {
+                    var dataObj = res.data.art_list || {};
+                    const dataList = Object.keys(dataObj).map((key) => dataObj[key]);
+                    dataList.forEach(function (val, i) {
+                        var list = `<li class="voteLi" data-id="${val.art_id}">
+                                       <img src="image/noCheck.png" class="round">
+                                       <p class="gameName ell2">${val.title}</p>
+                                       <p class="voteBtn wave ">投票</p>
+                                       <p class="vote_num none">${val.vote_num}</p>
+                                    </li>`;
+                        $('.voteOut').append(list)
+                    });
+                    const isVoted = dataList.some(function (item) {
+                        return item.voted===1
+                    });
+                    if (dataList.length > 0 && !isVoted) {  //2表示没有投过票
+                        $('.voteBtn').on('click', function () {
+                            var dataId = $(this).parents('.voteLi').attr('data-id');
+                            var is_checked = $(this).attr('class').indexOf('show') > -1;
+                            // console.log(is_checked);
+                            if (is_checked) {
+                                checkArr.splice(checkArr.indexOf(dataId), 1);
+                                $('.submit').hide(500);
+                                if (checkArr.length === 0) {
+                                    $('.submit').hide(500);
+                                }
+                                $(this).removeClass('show');
+                            } else {
+                                if (checkArr.length < 3) {
+                                    checkArr.push(dataId);
+                                } else {
+                                    layer.msg("最多只能投3票");
+                                    return
+                                }
+                                if (checkArr.length === 3) {
+                                    $('.submit').show(500);
+                                }
+                                $(this).addClass('show');
+                            }
+                        })
+                    }else if(dataList.length > 0 && isVoted){ //投过票了
+                        $('.submit').hide();
+                        $('.voteBtn').hide();
+                        $('.vote_num').show();
+
+                    }
+                }
+            });
+
+
+            $('.submit').click(function () {
+                layer.ready(function () {
+                    loadIndex = layer.load();
+                });
+                /**触发ajax**/
+                var data = {"ids":checkArr.join(',')};
+                myPost('/vote', data, function (res) {
+                    if (res.code === 200) {
+                        layer.msg("投票成功", {
+                            icon: 1,
+                            time: 1500 //1.5秒关闭（如果不配置，默认是3秒）
+                        }, function(){
+                            //上传成功
+                            $('.submit').hide();
+                            $('.voteBtn').hide();
+                            $('.vote_num').show();
+                            window.location.reload();
+                        });
+                    }
+                });
+
+            })
+        });
+
+    })
+</script>
+</html>

@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LM年会</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/bigTV.css">
+</head>
+<body>
+<div class="content_body">
+    <img src="image/bigTVlogo.png" class="bigTVlogo">
+    <p><img src="image/indexMaImg.png" class="indexMaImg"></p>
+
+    <!--<p class="start wave">开始</p>-->
+
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main"></div>
+
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<script src="https://cdn.bootcss.com/echarts/4.4.0-rc.1/echarts.min.js"></script>
+<script src="js/rem.js"></script>
+<script src="js/base_url.js"></script>
+<script>
+    var loadIndex,
+        layer;
+</script>
+<script src="js/request.js"></script>
+<script>
+    var DSQ=0;
+    // var baoliKey=false;
+
+    layui.use('layer', function () {
+        layer = layui.layer;
+        layer.ready(function () {
+            loadIndex = layer.load();
+        });
+        DSQ=setInterval(function () {
+            /**触发ajax**/
+            var data = {};
+            myPost('/voteInfo', data, function (res) {
+                if (res.code === 200) {
+                    var dataObj = res.data.vote_info || {};
+                    // console.log(dataObj);
+                    const dataList = Object.keys(dataObj).map((key) => dataObj[key]);
+                    // 基于准备好的dom，初始化echarts实例
+                    var myChart = echarts.init(document.getElementById('main'));
+                    // 指定图表的配置项和数据
+                    var option = {
+                        // backgroundColor: "#e74f42",
+                        title: {
+                            text: '',
+                        },
+                        tooltip: {},
+                        legend: {
+                            show:false,
+                            textStyle:{
+                                fontSize: 10,//字体大小
+                                color: '#ffffff'//字体颜色
+                            },
+                            data: ['票数']
+                        },
+                        xAxis: [{
+                            type: 'category',
+                            splitLine:{show:false},     //去掉网格线
+                            axisLine: {
+                                lineStyle: {
+                                    color: '#0092ff', // 颜色
+                                    width: 5// 粗细
+                                }
+                            },
+                            axisTick: {show: false},
+                            // data:['1挨家挨户几大哒哒哒哒哒哒','哒哒哒哒哒哒1挨家挨户几大','1挨哒哒哒哒哒哒家挨户几大','1挨家哒哒哒哒哒哒挨户几大','1挨家哒哒哒哒哒哒挨户几大','1挨家哒哒哒哒哒哒挨户几大','1挨家挨户几大','1挨哒哒哒哒哒哒家挨户几大','1挨家挨户几大哒哒哒哒哒哒','1挨家挨哒哒哒哒哒哒户几大','1挨家挨哒哒哒哒哒哒户几大','1挨哒哒哒哒哒哒家挨户几哒哒哒哒哒哒大','1挨家挨户哒哒哒哒哒哒几大','1挨家挨哒哒哒哒哒哒户几大','1挨家挨哒哒哒哒哒哒哒哒哒哒哒哒户几大'],
+                            data: dataList.map(function (item) {
+                                return item.title
+                            }),
+                            axisLabel: {
+                                show: true,
+                                textStyle: {
+                                    color: '#a6f9ff',
+                                    fontSize: '15',
+                                    fontFamily: "kaiti",
+                                },
+                                interval:0,
+                                rotate:18   //倾斜40度
+                            }
+                        }],
+
+
+                        yAxis: [{
+                            type: 'value',
+                            splitLine:{show:false }, //去掉网格线
+                            axisLine: {show: false},
+                            axisTick: {show: false},
+                            axisLabel: {
+                                show: false,
+                                textStyle: {
+                                    color: '#a6f9ff',
+                                    fontSize: '25',
+                                    fontFamily: "kaiti",
+                                }
+                            }
+
+                        }],
+
+                        series: [{
+                            name: '票数',
+                            type: 'bar',
+                            barWidth: 45,
+                            // data:[10,20,23,34,44,55,90,10,12,34,45,5,6,7,],
+                            data: dataList.map(function (item) {
+                                return item.vote_num
+                            }),
+                            label: {
+                                show: true,
+                                position: 'top',
+                                fontSize: '25',
+                                fontWeight:'bold',
+                                color: '#0092ff',  //#eb6100
+                            },
+                            //配置样式
+                            itemStyle: {
+                                //通常情况下：
+                                normal: {
+                                    //每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
+                                    color: function (params) {
+                                        var colorList = ['rgb(0,146,255)'];
+                                        return colorList[params.dataIndex];
+                                    }
+                                },
+                            }
+                        }]
+                    };
+
+                    // 使用刚指定的配置项和数据显示图表。
+                    myChart.setOption(option);
+                }
+            });
+        },2000);
+
+        // if (baoliKey) {
+            window.onkeydown = function (e) {
+                /**按下Enter键开启投票状态**/
+                if (e.keyCode === 13) {
+                    layer.ready(function () {
+                        loadIndex = layer.load();
+                    });
+                    /**触发ajax**/
+                    var data1 = {"next_type": 1};
+                    myPost('/changeVoteType', data1, function (res) {
+                        if (res.code === 200) {
+                            layer.msg("投票状态已经开启！", {
+                                icon: 1,
+                                time: 2600
+                            }, function(){
+                                console.log("投票状态已经开启");
+                            });
+
+                        }
+                    });
+                }
+
+                /**按下Shift键关闭投票状态**/
+                if (e.keyCode === 16) {
+                    layer.ready(function () {
+                        loadIndex = layer.load();
+                    });
+                    /**触发ajax**/
+                    var data2 = {"next_type": 2};
+                    myPost('/changeVoteType', data2, function (res) {
+                        if (res.code === 200) {
+                            layer.msg("投票状态已经关闭！", {
+                                icon: 2,
+                                time: 2600
+                            }, function(){
+                                // clearInterval(DSQ);
+                                console.log("投票状态已经关闭");
+                            });
+                        }
+                    });
+
+                }
+            };
+            // baoliKey = false
+        // }
+
+
+
+
+
+    })
+
+</script>
+</body>
+
+</html>

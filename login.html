@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>LM年会</title>
+    <link rel="stylesheet" type="text/css" href="css/common.css">
+    <link rel="stylesheet" type="text/css" href="layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="css/login.css">
+</head>
+<body>
+<div class="content_body none">
+    <img src="image/logo.png" class="logo"/>
+    <form class="men_form">
+        <div class="men_form-son men_form1">
+            <input type="text" class="men name" name="men" placeholder="请输入您的姓名"/>
+        </div>
+        <div class="men_form-son men_form2">
+            <input type="tel" class="men password" name="password" placeholder="请输入密钥"/>
+        </div>
+        <div class="submit wave"></div>
+    </form>
+</div>
+<div class="mask none">
+    <img src="image/successMask.png" class="successMask none">
+</div>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.min.js"></script>
+<script src="layui/layui.js"></script>
+<script src="js/rem.js"></script>
+<script src="js/base_url.js"></script>
+<script src="node_modules/lbd-wx-sdk/dist/index.js"></script>
+<script>
+    function onBridgeReady() {
+        WeixinJSBridge.call('hideOptionMenu');
+    }
+
+    if (typeof WeixinJSBridge == "undefined") {
+        if (document.addEventListener) {
+            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+        } else if (document.attachEvent) {
+            document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+        }
+    } else {
+        onBridgeReady();
+    }
+
+    // wx.runWithUrl('http://tools.goosdk.com/act/lm2020/wxjsbridge', false);
+    // wx.ready((function () {
+    //     wx.hideMenuItems({
+    //         menuList: [
+    //             "menuItem:copyUrl",  //复制链接
+    //             "menuItem:share:qq",  //分享QQ
+    //             "menuItem:share:QZone",  //分享到QQ空间
+    //             "menuItem:openWithSafari", //Safari浏览器打开
+    //             "menuItem:share:email",     //分享到邮件
+    //             "menuItem:share:brand",  //特殊的公众号
+    //             "menuItem:readMode", //阅读模式
+    //             "menuItem:originPage", //原始网页
+    //         ],
+    //         success: function (res) {
+    //             console.log(res)
+    //         },
+    //         fail: function (res) {
+    //             console.log(res)
+    //         }
+    //     });
+    //
+    // }));
+</script>
+<script>
+    var loadIndex,
+        layer;
+    var timeAjax;
+</script>
+<script src="js/request.js"></script>
+<script>
+    layui.use('layer', function () {
+        layer = layui.layer;
+        /**触发checkShakeType(ajax),来判断用户是否通过验证**/
+        layer.ready(function () {
+            loadIndex = layer.load();
+        });
+        var data = {};
+        myPost('/checkShakeType', data, function (res) {
+            if (res.code === 200) {
+                layer.ready(function () {
+                    loadIndex = layer.load();
+                });
+                $('.mask').show();
+                setTimeout(function () {
+                    layer.close(loadIndex);
+                    window.location.href = 'loginSuccess.html'
+                }, 300)
+            } else {
+                layer.close(loadIndex);
+                $('.content_body').show();
+            }
+        });
+        (/iphone|ipod|ipad/i.test(navigator.appVersion)) && document.addEventListener('blur', event => {
+            // 当页面没出现滚动条时才执行，因为有滚动条时，不会出现这问题
+            // input textarea 标签才执行，因为 a 等标签也会触发 blur 事件
+            if (
+                document.documentElement.offsetHeight <=
+                document.documentElement.clientHeight &&
+                ['input', 'textarea'].includes(event.target.localName)
+            ) {
+                document.body.scrollIntoView() // 回顶部
+            }
+        }, true);
+
+        $(function () {
+            $('.successMask').click(function () {
+                wx.closeWindow();
+            });
+            $('.submit').on("touchstart", function () {
+                let name = $('.name').val();
+                if (!name) {
+                    layer.msg("请输入姓名");
+                    return false;
+                }
+                let phone = $('.password').val();
+                if (!phone) {
+                    layer.msg("请输入密钥");
+                    return false;
+                }
+                // else if (phone.length !== 11) {
+                //     layui.layer.msg("请输入正确手机号码格式");
+                //     return false;
+                // }
+                /**触发login（ajax）**/
+                layer.ready(function () {
+                    loadIndex = layer.load();
+                });
+                var data = {"user_name": $('.name').val(), "user_key": $('.password').val()};
+                myPost('/login', data, function (res) {
+                    if (res.code === 200) {
+                        layer.msg("认证成功！", {
+                            icon: 1,
+                            time: 1500
+                        }, function () {
+                            setTimeout(function () {
+                                window.location.href = 'loginSuccess.html'
+                            }, 700)
+                        });
+                    }
+                });
+            });
+        })
+    })
+    window.onload = function (e) {
+        var _body = document.getElementsByTagName('body')[0];
+        _body.style.height = _body.clientHeight + "px";
+    };
+</script>
+</body>
+</html>

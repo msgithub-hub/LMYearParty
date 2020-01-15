@@ -1,0 +1,207 @@
+body {
+    position: relative;
+}
+
+html, body {
+    height: 100%;
+    width: 100%;
+}
+
+.content_body {
+    width: 100%;
+    height: 100%;
+    background: url(../image/bigTvBG.jpg) no-repeat center center;
+    background-size: 100% 100%;
+    position: relative;
+    overflow: hidden;
+    /*overflow: auto;*/
+    /*-webkit-overflow-scrolling: touch*/
+}
+.bigTVlogo {
+    width: 15%;
+    height: auto;
+    margin-top: 2vh;
+    margin-left: 2%;
+
+}
+
+/*视频*/
+.shiping{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 50;
+    background-color: black;
+}
+/*第一个视频*/
+.videoRQ{
+    width: 100%;
+    height: 100vh;
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*z-index: 50;*/
+    background-color: black;
+
+}
+.video {
+    width: 100%;
+    height: 100%;
+}
+
+/*第二个视频*/
+.videoRQ2{
+    width: 100%;
+    height: 100vh;
+    /*position: fixed;*/
+    /*left: 0;*/
+    /*top: 0;*/
+    /*z-index: 50;*/
+    background-color: black;
+}
+.video2 {
+    width: 100%;
+    height: 100%;
+}
+
+/*.排行榜*/
+.divBottom{
+    width: 70%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    background: rgba(255,255,255,0.3);
+    position: absolute;
+    left:15%;
+    bottom: 5px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    z-index: 105;
+}
+.blueDiv{
+    width: 4vw;
+    height: 4vw;
+    margin-left: 2%;
+    background: #4b75c7;
+    border-radius: 6px;
+    transform:rotate(-10deg);
+}
+.blueDiv p{
+    width: 4vw;
+    height: 2vw;
+    line-height: 2vw;
+    color: white;
+    font-size: 0.5rem;
+    text-align: center;
+    /*transform:rotate(10deg);*/
+}
+.listUl{
+    width: 62vw;
+    /*height: 16.3vw;*/
+    /*overflow: auto;*/
+    /*background: pink;*/
+    margin-left: 0.5%;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+}
+.listLI{
+    width:1.3vw;
+    /*height: 1.3vw;*/
+    background: red;
+    position: relative;
+    /*float: left;*/
+    margin-left: 30px;
+    margin-top: 10px;
+}
+.num{
+    width: 1vw;
+    height: 1vw;
+    position:absolute;
+    top: -0.3vw;
+    left: -0.2vw;
+    border-radius: 50%;
+    color: white;
+    background-color: #4b75c7;
+    font-size: 6px;
+    text-align: center;
+    line-height: 1.0vw;
+}
+.imgURl{
+    width:3vw;
+    height: 3vw;
+    object-fit: cover;
+}
+
+
+
+
+
+/*倒计时模态框*/
+.mask{
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 10;
+    background-color: rgba(0, 0, 0, 0.7);
+
+}
+.ma{
+    width: 20%;
+    height: auto;
+    margin-left: 40%;
+    margin-top: 9vw;
+}
+.goBtn{
+    width: 20%;
+    margin-left: 40%;
+    margin-top: 2vw;
+    color: gold;
+    font-size: 4rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+
+
+
+
+/*倒计时轮播图*/
+.vform2 {
+    /*background: red;*/
+    width: 20vw;
+    height: 20vw;
+    position: absolute;
+    left: 0;
+    top:0;
+    right:0;
+    bottom: 0;
+    margin: auto;
+}
+
+.shenti1-1 {
+    display: none;
+    position: relative;
+}
+
+.number {
+    width: 20vw;
+    height: 20vw;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    line-height: 20vw;
+    color: gold;
+    font-size:15rem;
+}
+.number1{
+    font-size:4rem;
+}
+
+.show {
+    display: block;
+}
